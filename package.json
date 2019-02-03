@@ -1,0 +1,35 @@
+{
+  "name": "closures_two",
+  "version": "1.0.0",
+  "description": "closures two",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage .test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shustrila/closures_two.git"
+  },
+  "keywords": [
+    "js",
+    "webpack",
+    "node.js",
+    "eslint",
+    "jest"
+  ],
+  "author": "Alexsandr Maxalov (Shustrila)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shustrila/closures_two/issues"
+  },
+  "homepage": "https://github.com/Shustrila/closures_two#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "jest": "^24.0.0"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5"
+  }
+}
