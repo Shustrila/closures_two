@@ -1,31 +1,40 @@
-export default function setUpAttacks(items, attack = 0, index = 0, shield = true) {
+export default (items, shield = true) => {
 	const result = [];
 
-	if(shield){
-		items.forEach((item, i, arr) => {
-			const damage = (attack / arr.length).toFixed(0);
-			item.health -= damage;
+	items.forEach((item, i, arr) => {
+		let fun = (damage = 0) => {
+			let thisChar = i;
 
-			if(item.health < 0 ){
-				items[index].health = item.health + items[index].health;
-				item.health = 0
+			if (shield) {
+				let divisDamag = damage / arr.length;
+
+				arr.map((item) => {
+					item.health -= Math.floor(divisDamag);
+					return item
+				}).map((item, i, arr) => {
+					if(item.health < 0) {
+						arr[thisChar].health = item.health + arr[thisChar].health;
+						item.health = 0;
+					}
+
+					if(arr[thisChar].health  < 0) {
+						arr[thisChar].health = 0
+					}
+				});
+
+			} else {
+				if (item.health > damage) {
+					item.health -= damage;
+				}	else {
+					item.health = 0;
+				}
 			}
 
-			result.push(item);
-		})
-	} else {
-		items.forEach((item, i) => {
-			if (i === index){
-				item.health -= attack
-			}
+			return arr;
+		};
 
-			if (item.health < 0) {
-				item.health = 0
-			}
-
-			result.push(item);
-		})
-	}
+		result.push(fun)
+	});
 
 	return result;
 };

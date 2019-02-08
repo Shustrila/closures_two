@@ -1,6 +1,6 @@
 import setUpAttacks from "./setUpAttacks.js"
 
-describe("TEST: setUpAttacks", () => {
+describe("TEST: set up attacks", () => {
 
 	test("the user uses elixir", () => {
 		const characters = [
@@ -8,12 +8,14 @@ describe("TEST: setUpAttacks", () => {
 			{name: 'лучник', health: 80},
 			{name: 'мечник', health: 10},
 		];
-
-		expect(setUpAttacks(characters, 9,0, 1)).toEqual([
+		const expected = [
 			{name: 'маг', health: 97},
 			{name: 'лучник', health: 77},
 			{name: 'мечник', health: 7},
-		])
+		];
+		const received = setUpAttacks(characters);
+
+		expect(received[2](9)).toEqual(expected)
 	});
 
 	test("the user has not used the elixir", () => {
@@ -22,12 +24,14 @@ describe("TEST: setUpAttacks", () => {
 			{name: 'лучник', health: 80},
 			{name: 'мечник', health: 10},
 		];
-
-		expect(setUpAttacks(characters, 10, 0, false)).toEqual([
-			{name: 'маг', health: 90},
+		const expected = [
+			{name: 'маг', health: 100},
 			{name: 'лучник', health: 80},
-			{name: 'мечник', health: 10},
-		])
+			{name: 'мечник', health: 8},
+		];
+		const received = setUpAttacks(characters, false);
+
+		expect(received[2](2)).toEqual(expected)
 	});
 
 	test("the user has more than you need damage", () => {
@@ -36,12 +40,14 @@ describe("TEST: setUpAttacks", () => {
 			{name: 'лучник', health: 80},
 			{name: 'мечник', health: 10},
 		];
-
-		expect(setUpAttacks(characters, 30, 2, false)).toEqual([
+		const expected = [
 			{name: 'маг', health: 100},
-			{name: 'лучник', health: 80},
-			{name: 'мечник', health: 0},
-		])
+			{name: 'лучник', health: 0},
+			{name: 'мечник', health: 10},
+		];
+		const received = setUpAttacks(characters, false);
+
+		expect(received[1](100)).toEqual(expected)
 	});
 
 	test("death of an ally and transfer damage on the character", () => {
@@ -50,12 +56,14 @@ describe("TEST: setUpAttacks", () => {
 			{name: 'лучник', health: 80},
 			{name: 'мечник', health: 10},
 		];
-
-		expect(setUpAttacks(characters, 50, 0)).toEqual([
-			{name: 'маг', health: 76},
-			{name: 'лучник', health: 63},
+		const expected = [
+			{name: 'маг', health: 67},
+			{name: 'лучник', health: 24},
 			{name: 'мечник', health: 0},
-		])
+		];
+		const received = setUpAttacks(characters);
+
+		expect(received[1](100)).toEqual(expected)
 	});
 
 	test("forgot to pass parameters", () => {
@@ -64,8 +72,57 @@ describe("TEST: setUpAttacks", () => {
 			{name: 'лучник', health: 80},
 			{name: 'мечник', health: 10},
 		];
+		const received = setUpAttacks(characters);
 
-		expect(setUpAttacks(characters)).toEqual(characters)
+		expect(received[2]()).toEqual(characters)
+	});
+
+	test("huge damage to the whole team", () => {
+		const characters = [
+			{name: 'маг', health: 100},
+			{name: 'лучник', health: 80},
+			{name: 'мечник', health: 10},
+		];
+		const expected = [
+			{name: 'маг', health: 0},
+			{name: 'лучник', health: 0},
+			{name: 'мечник', health: 0},
+		];
+		const received = setUpAttacks(characters);
+
+		expect(received[2](3000)).toEqual(expected)
+	});
+
+	test("damage greater than the health of one character", () => {
+		const characters = [
+			{name: 'маг', health: 100},
+			{name: 'лучник', health: 80},
+			{name: 'мечник', health: 10},
+		];
+		const expected = [
+			{name: 'маг', health: 100},
+			{name: 'лучник', health: 0},
+			{name: 'мечник', health: 10},
+		];
+		const received = setUpAttacks(characters, false);
+
+		expect(received[1](200)).toEqual(expected);
+	});
+
+	test("the character from the initial is dead", () => {
+		const characters = [
+			{name: 'маг', health: 100},
+			{name: 'лучник', health: 80},
+			{name: 'мечник', health: 0},
+		];
+		const expected = [
+			{name: 'маг', health: 100},
+			{name: 'лучник', health: 71},
+			{name: 'мечник', health: 0},
+		];
+		const received = setUpAttacks(characters, false);
+
+		expect(received[1](9)).toEqual(expected)
 	});
 
 });
