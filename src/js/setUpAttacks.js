@@ -8,9 +8,13 @@ export default (items, shield = true) => {
 			if (shield) {
 				let divisDamag = damage / arr.length;
 
-				arr.map((item) => {
+				if(!Number.isInteger(divisDamag)){
+					item.health -= damage % arr.length;
+				}
+
+				arr.map((item, i) => {
 					item.health -= Math.floor(divisDamag);
-					return item
+					return item;
 				}).map((item, i, arr) => {
 					if(item.health < 0) {
 						arr[thisChar].health = item.health + arr[thisChar].health;
